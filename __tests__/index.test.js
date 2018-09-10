@@ -1,5 +1,5 @@
-import vis from '../src/index';
+import graph from '../src/index';
 
-test('is function', () => {
-  expect(typeof vis === 'function').toBe(true);
+test('graph is object', () => {
+  expect(typeof graph === 'object').toBe(true);
 });

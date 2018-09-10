@@ -1,6 +1,6 @@
 {
   "name": "redux-visualize",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "description": "Visualize the dependency graph of redux applications",
   "main": "./dist/index.js",
   "scripts": {

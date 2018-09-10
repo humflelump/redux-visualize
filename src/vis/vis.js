@@ -3,8 +3,9 @@ import * as constants from './constants';
 import store from './store';
 import * as extension from './extension-interface';
 import Node from './node';
+import * as messager from './extension-interface';
 
-function vis(f, name=null) {
+export function vis(f, name=null) {
     const type = functions.getType(f);
     switch(type) {
         case constants.RESELECT_SELECTOR:
@@ -97,7 +98,7 @@ function newConnect(connect, defaultName=null) {
     return (mapState, mapDispatch) => (Component) => {
         const name = getNameFromComponent(Component, defaultName);
         setTimeout(() => {
-            const state = window.store.getState();
+            const state = store.getState();
             store.beginLogging();
             mapState(state);
             store.stopLogging();
@@ -139,4 +140,9 @@ function newAsyncSelector(create, defaultName=null) {
     return result;
 }
 
-export default vis;
+
+export function createStateGetter(f) {
+    store.setStateGetter(f);
+}
+
+export const update = messager.update;

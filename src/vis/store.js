@@ -6,6 +6,10 @@ class Store {
         this.indexedNodes = {};
         this.loggedIds = [];
         this.isLoggingOn = false;
+        this.getState = () => {
+            throw 'Add state getter function';
+        };
+        this.should
     }
 
     getSerializableNodes(state) {
@@ -38,6 +42,10 @@ class Store {
         for (let i = 0; i < count; i++) {
             this.loggedIds.pop();
         }
+    }
+
+    setStateGetter(f) {
+        this.getState = f;
     }
 }
 const store = new Store();

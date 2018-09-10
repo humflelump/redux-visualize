@@ -65,21 +65,7 @@ export function getPathsToVariable(state, variable, maxDepth = 4) {
 export function pathToString(solution) {
     return ['state', ...solution].join('.');
 }
-/*
-const s = {
-    a: {
-        b: 1,
-        c: 2
-    },
-    d: {
-        b:2,
-        e: 5,
-    },
-};
-const z = s.a;
-console.log('test', getPathsToVariable(s, z).map(pathToString));
-console.log('test', getPathsToVariable(s, 2).map(pathToString));
-*/
+
 function helper(state, variable, maxDepth, solutions, depth=0, history=[]) {
     if (state === variable) {
         return solutions.push([...history]);
