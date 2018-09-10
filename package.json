@@ -27,7 +27,9 @@
     "url": "https://github.com/humflelump/redux-visualize/issues"
   },
   "homepage": "https://github.com/humflelump/redux-visualize#readme",
-  "dependencies": {},
+  "dependencies": {
+    
+  },
   "devDependencies": {
     "jest": "^20.0.4",
     "babel-cli": "^6.24.1",
@@ -36,7 +38,12 @@
     "babel-preset-stage-2": "^6.24.1",
     "coveralls": "^2.13.1",
     "jest-cli": "^20.0.4",
-    "underscore": "^1.9.0"
+    "underscore": "^1.9.0",
+    "react": "^16.4.2",
+    "babel-preset-react": "^6.24.1"
+  },
+  "peerDependencies": {
+    "react": "16.x"
   },
   "jest": {
     "collectCoverageFrom": [
