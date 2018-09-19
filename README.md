@@ -1,4 +1,4 @@
-![alt Screenshot](Screenshot.png "Screenshot")
+![alt Screenshot](gif.gif "Screenshot")
 
 # What it's for
 It is used easily visualize the dependency graph of a javascript application. It is specially targeted towards react/redux/reselect applications however it will be useful for any javascript application written in a functional style.
