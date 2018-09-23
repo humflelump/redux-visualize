@@ -1,2 +1,2 @@
-import graph from './vis2/vis';
+import graph from './vis';
 export default graph;

@@ -4,7 +4,9 @@ export const STRING = 'string';
 export const RESELECT_SELECTOR = 'RESELECT_SELECTOR';
 export const ASYNC_SELECTOR = 'ASYNC_SELECTOR';
 export const CONNECT = 'CONNECT';
+export const REACT_COMPONENT = 'REACT_COMPONENT';
 export const STATE_VARIABLE = 'STATE_VARIABLE';
+export const FUNCTION = 'FUNCTION';
 export const UNKNOWN = 'UNKNOWN';
 export const SELECTOR = 'SELECTOR';
 

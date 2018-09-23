@@ -21,19 +21,15 @@ export function getType(f) {
         }
     } catch (e) {}
 
+    if (isReactComponent(f)) {
+        return constants.REACT_COMPONENT;
+    }
+
     if (typeof f === 'function') {
         return constants.FUNCTION;
     }
 
     return constants.UNKNOWN;
-}
-
-const obj = {
-    a: {
-        b: 'text',
-        d: 'woah',
-    },
-    c: 'hi',
 }
 
 export function convert(obj) {
@@ -45,7 +41,6 @@ export function convert(obj) {
             : obj[key];
         Object.defineProperty(newObj, key, {
             get: () => {
-                console.log('key:', key, child);
                 return child;
             },
             enumerable: true,
@@ -54,15 +49,15 @@ export function convert(obj) {
     return newObj;
 }
 
-export function make_id() {
-    make_id.c = (make_id.c || 0) + 1;
-    return make_id.c.toString();;
+export function make_id(name) {
+    make_id[name] = (make_id[name] || 0) + 1;
+    return `${name}_${make_id[name].toString()}`;
 }
 
-window.obj = convert(obj);
 
 export function getFunctionName(func, defaultName=null) {
     if (typeof defaultName === 'string') return defaultName;
+    console.log(func, func.name);
     if (func && func.name && func.name !== '') return func.name;
     return constants.DEFAULT_NAME;
 }
@@ -84,4 +79,26 @@ export function getStateVariableValue(state, keys) {
         value = value[key];
     }
     return value;
+}
+
+function isClassComponent(component) {
+    return (
+        typeof component === 'function' && 
+        !!component.prototype.isReactComponent
+    ) ? true : false
+}
+
+function isFunctionComponent(component) {
+
+    return (
+        typeof component === 'function' && 
+        String(component).includes('createElement')
+    ) ? true : false;
+}
+
+function isReactComponent(component) {
+    return (
+        isClassComponent(component) || 
+        isFunctionComponent(component)
+    ) ? true : false;
 }

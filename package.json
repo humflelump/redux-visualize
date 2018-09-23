@@ -1,6 +1,6 @@
 {
   "name": "redux-visualize",
-  "version": "0.0.3",
+  "version": "1.0.3",
   "description": "Visualize the dependency graph of redux applications",
   "main": "./dist/index.js",
   "scripts": {
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/humflelump/redux-visualize#readme",
   "dependencies": {
-    
+    "prop-types": "^15.6.2"
   },
   "devDependencies": {
     "jest": "^20.0.4",
@@ -43,7 +43,7 @@
     "babel-preset-react": "^6.24.1"
   },
   "peerDependencies": {
-    "react": "16.x"
+    "react": ">=15.0.0"
   },
   "jest": {
     "collectCoverageFrom": [
