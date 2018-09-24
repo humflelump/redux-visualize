@@ -1,19 +1,29 @@
 ![alt Screenshot](gif.gif "Screenshot")
-
 # What it's for
-It is used easily visualize the dependency graph of a javascript application. It is specially targeted towards react/redux/reselect applications however it will be useful for any javascript application written in a functional style.
+It is used easily visualize the dependency graph of a javascript application. It is specially targeted towards react/redux/reselect applications however it can be useful to just about any web application.
+
+Questions it answers:
+* What is the overall architecture of the application
+* Which components are dependent on a given state variable
+* Which state variables are dependencies of a given component
+* Which selectors are having performance issues
+* What is the current value cached inside of a selector
+* Which file is the parent component in
 
 # How to use it
-This library create a dependency graph where each node is one of the following:
+This library creates a dependency graph where each node is one of the following:
 * plain javascript function
-* react-redux connected Component
+* react-redux connected component
+* normal react component
 * reselect selector
 * async-selector selector
 * redux state variable
 
-This library was designed to be a user friendly as possible. The entire dependency graph is generated at runtime with a minimum of user input. All you have to do is wrap any code you want to be included in the dependency graph in the `graph.vis()` method.
-
 ## Initial setup
+
+First install the [Chrome Extension](https://chrome.google.com/webstore/detail/redux-visualize/pmpgeljjhciaifaipibkhljkppdagkea)
+
+Next connect the redux store and add any nodes to the graph
 ```
 import { createStore } from 'redux';
 import reducer from './reducers';
@@ -34,7 +44,7 @@ import graph from 'redux-visualize';
 function myFunction_(x) {
   return x + 15;
 }
-const myFunction = graph.vis(myFunction_);
+const myFunction = graph.add(myFunction_);
 ```
 
 ## Use on a reselect selector
@@ -47,7 +57,7 @@ const stateVar = state => state.x;
 function myFunction_(x) {
   return x + 15;
 }
-const mySelector = graph.vis(createSelector)([stateVar], myFunction_); 
+const mySelector = graph.add(createSelector)([stateVar], myFunction_); 
 ```
 
 ## Use on a async-selector selector
@@ -60,7 +70,7 @@ const stateVar = state => state.x;
 async function myAsyncFunction_(x) {
   return x + 15;
 }
-const mySelector_ = graph.vis(createAsyncSelector)({
+const mySelector_ = graph.add(createAsyncSelector)({
   sync: x => 0,
   async: myAsyncFunction_,
 }, stateVar); 
@@ -77,7 +87,7 @@ const MyComponent = props => <div />
 
 const mapState = state => ({});
 
-const MyConnectedComponent = graph.vis(connect)(mapState, null)(MyComponent);
+const MyConnectedComponent = graph.add(connect)(mapState, null)(MyComponent);
 ```
 # How it works
 ## Basics
