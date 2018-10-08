@@ -23,18 +23,17 @@ This library creates a dependency graph where each node is one of the following:
 
 First install the [Chrome Extension](https://chrome.google.com/webstore/detail/redux-visualize/pmpgeljjhciaifaipibkhljkppdagkea)
 
-Next connect the redux store and add any nodes to the graph
+Next enhance the store to enable time-travel debugging and include state variables in the dependency graph.
 ```
 import { createStore } from 'redux';
 import reducer from './reducers';
-import graph from './vis2/vis';
 
-const store = graph.watchReduxStore(createStore(reducer));
+const store = createStore(
+  reducer,
+  undefined,
+  createStore => window.graph.enhanceCreateStore(createStore),
+);
 
-store.subscribe(() => {
-  // Optionally update the chrome extension every time a dispatch is invoked.
-  graph.displayGraphInExtension();
-});
 ```
 
 ## Use on a function
@@ -44,7 +43,7 @@ import graph from 'redux-visualize';
 function myFunction_(x) {
   return x + 15;
 }
-const myFunction = graph.add(myFunction_);
+const myFunction = window.graph.add(myFunction_);
 ```
 
 ## Use on a reselect selector
@@ -57,7 +56,7 @@ const stateVar = state => state.x;
 function myFunction_(x) {
   return x + 15;
 }
-const mySelector = graph.add(createSelector)([stateVar], myFunction_); 
+const mySelector = window.graph.add(createSelector)([stateVar], myFunction_); 
 ```
 
 ## Use on a async-selector selector
@@ -70,7 +69,7 @@ const stateVar = state => state.x;
 async function myAsyncFunction_(x) {
   return x + 15;
 }
-const mySelector_ = graph.add(createAsyncSelector)({
+const mySelector_ = window.graph.add(createAsyncSelector)({
   sync: x => 0,
   async: myAsyncFunction_,
 }, stateVar); 
@@ -87,8 +86,38 @@ const MyComponent = props => <div />
 
 const mapState = state => ({});
 
-const MyConnectedComponent = graph.add(connect)(mapState, null)(MyComponent);
+const MyConnectedComponent = window.graph.add(connect)(mapState, null)(MyComponent);
 ```
+
+## Long-term use
+There are two problems with approach shown above. Firstly, this code will break for anyone who doesn't have the chrome extension. Secondly, this code will be very hard to remove when used in a production environment. To handle this, it is recommended to create a file which handles these issue and export the required functions. For example:
+```
+function isInProduction() {
+  // Whatever logic you need
+  return process.env.REACT_APP_ENV === 'production';
+}
+
+// These methods will do nothing, and can be used in production
+const noopGraph = {
+  enhanceCreateStore: f => f,
+  add: f => f,
+};
+
+// This is the actual object injected by the extension
+const realGraph = window.graph;
+
+const graph = isInProduction() && realGraph ? realGraph : noopGraph;
+
+export function add(f) {
+  return graph.add(f);
+}
+
+export function enhance(createStore) {
+  return graph.enhanceCreateStore(createStore);
+}
+```
+
+
 # How it works
 ## Basics
 The basic idea is that it uses the function call stack to construct the dependency graph by injecting listeners into any functions the user wants. 
